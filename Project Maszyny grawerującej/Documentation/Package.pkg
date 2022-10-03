@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="File">Projekt maszyny grawerującej.pdf</Object>
+    <Object Type="File">Maszyna stanów trybu automatycznego.pdf</Object>
+    <Object Type="File">Maszyna stanów trybu manualnego.pdf</Object>
+    <Object Type="File">Wizualizacja HMI.pdf</Object>
+    <Object Type="File">Instrukcja obsługi maszyny.pdf</Object>
+    <Object Type="File">Maszyna stanów urządzenia.pdf</Object>
+    <Object Type="File">Spostrzeżenia na temat realizacji projektu.pdf</Object>
+  </Objects>
+</Package>

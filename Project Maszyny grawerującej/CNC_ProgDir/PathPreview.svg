@@ -1,0 +1,13 @@
+<svg width="400" height="300" version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg x="5" y="5" width="390" height="290" >
+<g id="mainGroup">
+<g id="group0" stroke="red" stroke-width="1" fill="none">
+<path d = "M 0 0 C 0 0 0 0 0 0 "/>
+</g>
+</g>
+<style>#mainGroup {
+ transform:translate(nanpx,nanpx) scale(inf,-inf);
+} </style> 
+<style>#group0 {
+ stroke-width: 0;} </style> 
+</svg></svg>

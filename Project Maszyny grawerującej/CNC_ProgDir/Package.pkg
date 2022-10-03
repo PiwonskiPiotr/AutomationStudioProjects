@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="DataObject" Language="Cnc">LetterSi</Object>
+    <Object Type="DataObject" Language="Cnc">CncProg</Object>
+    <Object Type="DataObject" Language="Cnc">LetterI</Object>
+    <Object Type="DataObject" Language="Cnc">LetterX</Object>
+    <Object Type="DataObject" Language="Cnc">LetterW</Object>
+    <Object Type="DataObject" Language="Cnc">LetterR</Object>
+    <Object Type="DataObject" Language="Cnc">LetterU</Object>
+    <Object Type="DataObject" Language="Cnc">GoToHome</Object>
+  </Objects>
+</Package>

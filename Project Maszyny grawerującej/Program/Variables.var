@@ -1,0 +1,138 @@
+(* Variabels nesessery to supports AxisBasic.*)
+VAR
+	MpAxisBasic_Z : MpAxisBasic; (*Object  describe Axis Z *)
+	MpAxisBasic_X : MpAxisBasic; (*Object  describe Axis X*)
+	MpAxisBasic_Y : MpAxisBasic; (*Object  describe Axis Y*)
+	MpAxisSpindle : MpAxisBasic; (*Object  describe Axis Spindle*)
+	AxisParameters : ARRAY[0..3] OF MpAxisBasicParType; (*Instance agregate parameters of  all single axis*)
+END_VAR
+(* Variabels nesessery to supports CNCAxis.*)
+VAR
+	MpCnc3Axis_0 : MpCnc3Axis; (*Object  describe CNC Axis*)
+	CncParameters : MpCnc3AxisParType; (*Instance agregate parameters of  CNC axis*)
+END_VAR
+(*Main Variables used in main *)
+VAR
+	AlarmCore : MpAlarmXCore; (*Object  describe AlarmX*)
+	AxisState : AxisStateEnum; (*Variable representet of state machine*)
+	PowerOnSwitch : BOOL; (*Variable conected with toggle button which switch on/off motors*)
+END_VAR
+(*Variables I/O*)
+VAR
+	prevLaserSensorState : BOOL; (*prev value of laser sensor*)
+	diEmergencyStop : BOOL; (*Emergency Stop Button*)
+	diLaserSensor : BOOL; (*Variable phisicaly conentet with input, represented laser sensor*)
+	doLaserSensor : BOOL; (*Variable phisicaly conentet with output, represented state of laser sensor*)
+END_VAR
+(*Variables used in main /Used for visualization*)
+VAR
+	SwitchManual : BOOL; (*Switch mode Manual*)
+	SwitchAuto : BOOL; (*Switch mode Auto*)
+END_VAR
+(*Variabels used in Auto mode / used for visualiztion*)
+VAR
+	AutoState : AutoStateEnum; (*Variable representet of state AutoMode*)
+	SwitchStop : BOOL; (*Stop automatic process*)
+	SwitchStart : BOOL; (*Start automatic process*)
+	endMeasurePos : REAL; (*Temp variavle to save position in xX axis when enden measure*)
+	startMeasurePos : REAL; (*Temp variable to save position in X axis when started measure*)
+	LenghtOfElement : REAL; (*Calculated length of element*)
+	LenOfString : USINT; (*Calculated length of string*)
+	CenterOfElement : REAL; (*Calculated center of element*)
+	RemembLetter : LettersEnum; (*Variable representet chosen letter in visualisation*)
+	EngravingLevel : BOOL; (*Flag tell than spindel is upper than 100 mm*)
+	EngravingLevelUp : BOOL; (*Flag tell than spindel is lower than 100 mm*)
+	RememberStop : BOOL; (*Variable which remember press stop when object was engraving*)
+	ChosenLetter : LettersEnum; (*chosen letter in visualization update in oyher state than engraving*)
+END_VAR
+(**)
+(*Variabels used inn Manual Mode*)
+VAR
+	ManualState : ManualStateEnum;
+	XPosition : LREAL; (*Value of set position on X axis*)
+	XVelocity : REAL; (*Value of velocity in axis X*)
+	ConfXPos : BOOL; (*Confirmation of X Pos*)
+	YPosition : LREAL; (*Value of set position on Y axis*)
+	YVelocity : REAL; (*Value of velocity in axis Y*)
+	ConfYPos : BOOL; (*Confirmation of Y Pos*)
+	ZPosition : LREAL; (*Value of set position Z axis*)
+	ZVelocity : REAL; (*Value of velocity in axis Z*)
+	ConfZPos : BOOL; (*Confirm of Z Pos*)
+	JogPlusXActive : BOOL; (*Move Jog positive in axis X is enable*)
+	JogMinusXActive : BOOL; (*Move Jog negative in axis X is enable*)
+	JogPlusYActive : BOOL; (*Move Jog positive in axis Y is enable*)
+	JogMinusYActive : BOOL; (*Move Jog negative in axis Y is enable*)
+	JogPlusZActive : BOOL; (*Move Jog positive in axis Z is enable*)
+	SwitchSpindleOnOff : BOOL; (*switch enabled move spindle axis*)
+	JogMinusZActive : BOOL; (*Move Jog negative in axis Z is enable*)
+	SpindleVelocityIn : REAL; (*Value of rotation speed of spindle*)
+END_VAR
+(*Predefinited length of letter*)
+VAR CONSTANT
+	LEN_I : USINT := 1;
+	LEN_i : USINT := 1;
+	LEN_W : USINT := 100;
+	LEN_R : USINT := 50;
+	LEN_U : USINT := 75;
+	LEN_X : USINT := 75;
+END_VAR
+(*Insert your comment here.*)
+VAR
+	showMesBox : BOOL; (*variable activate messege box in visu when object is too short*)
+	FlagDisableConfMove : BOOL; (*Flag switch off enable of move confirm button when machine in auto mode*)
+	FlagConfirmError : BOOL := FALSE; (*Flag detect confirm Error stop*)
+	FlagEstop : BOOL; (*Flag detect press Emergency stop*)
+	FlagPresEStop : BOOL; (*Flag detect if  Emergrncy stop is actual press*)
+	FlagAbleSet : BOOL; (*This Flag say us that we can set new position and velocity parameters*)
+	FlagDisableJogPos : BOOL; (*flag dialbe a switch JOG*)
+	FlagDisableJogNeg : BOOL; (*flag dialbe a switch JOG*)
+	FlagDisableJogPosY : BOOL; (*flag dialbe a switch JOG*)
+	FlagDisableJogNegY : BOOL; (*flag dialbe a switch JOG*)
+END_VAR
+(*Value Parameters of  Axis  X*)
+VAR
+	XVelFast : REAL := 10; (*Value of X fast velocity*)
+	XDecleration : REAL := 25; (*Value of deceleration*)
+	XAcceleration : REAL := 25; (*Value of acceleration*)
+END_VAR
+VAR CONSTANT
+	X_JOG_CNC_VEL : REAL := 10; (*Value of jog velocity in cnc parameters*)
+END_VAR
+VAR
+	XJogDec : REAL := 5; (*value of jog deceleration*)
+	XJogAcc : REAL := 25; (*Value of jog acceleration*)
+	XJogVel : REAL := 2; (*Value of jog velocity*)
+	XVelSlow : REAL := 5; (*Value of X slow velocity*)
+END_VAR
+(*Value Parameters of  Axis  Y*)
+VAR
+	YVel : REAL := 10; (*Value of velocity*)
+END_VAR
+VAR CONSTANT
+	Y_JOG_CNC_VEL : REAL := 10; (*Value of jog velocity in cnc parameters*)
+END_VAR
+VAR
+	YDecleration : REAL := 25; (*Value of deceleration*)
+	YJogDec : REAL := 5; (*value of jog deceleration*)
+	YJogAcc : REAL := 25; (*Value of jog acceleration*)
+	YAcceleration : REAL := 25; (*Value of acceleration*)
+	YJogVel : REAL := 2; (*Value of jog velocity*)
+END_VAR
+(*Value Parameters of  Axis  Z*)
+VAR CONSTANT
+	Z_JOG_CNC_VEL : REAL := 10; (*Value of jog velocity in cnc parameters*)
+END_VAR
+VAR
+	ZDecleration : REAL := 25; (*Value of deceleration*)
+	ZJogDec : REAL := 5; (*value of jog deceleration*)
+	ZJogAcc : REAL := 25; (*Value of jog acceleration*)
+	ZAcceleration : REAL := 25; (*Value of acceleration*)
+	ZJogVel : REAL := 2; (*Value of jog velocity*)
+	ZVel : REAL := 10; (*Value of velocity*)
+END_VAR
+(*Parameters of  CNC program*)
+VAR
+	FeedSlow : UDINT := 600; (*Slow feed set when letter is engraving*)
+	FeedFast : UDINT := 1000; (*Fast feed set when go from/to home position*)
+	SPINDLE_SPEED : UDINT := 5000; (*value of spindle speed*)
+END_VAR
